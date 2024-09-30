@@ -6,6 +6,7 @@ import {EnterPoints} from "./EnterPoints";
 import {CurrentPoints} from "./CurrentPoints";
 
 function App() {
+  console.log('dv:', 1)
   const [points, setPoints] = useState([[1, 6], [2, 20], [4, 10]])
 
   return (
