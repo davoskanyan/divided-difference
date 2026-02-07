@@ -194,20 +194,20 @@ export const DividedDifference = ({ points }: { points: [number, number][] }) =>
 
   return (
     <Fragment key={JSON.stringify(grid)}>
-      <h3>Divided Difference</h3>
-      <div style={{ display: 'flex', gap: '20px' }}>
+      <h3 className="text-lg font-medium">Divided Difference</h3>
+      <div className="flex gap-5">
         {grid.map((layer, i) => (
           <div key={i}>
             {layer.map((cell, j) => (
-              <div key={j} style={{ height: '40px' }}>
+              <div key={j} className="min-h-10">
                 <DividedDifferenceCell cell={cell} />
               </div>
             ))}
           </div>
         ))}
       </div>
-      <h3>Interpolation Polynomial</h3>
-      <p>
+      <h3 className="text-lg font-medium">Interpolation Polynomial</h3>
+      <p className="text-base">
         <MathJax>
           \(f(x) = {pol.toTex()} = {beautified.toTex()} \)
         </MathJax>

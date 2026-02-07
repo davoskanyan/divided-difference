@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { NumberField, Button, ActionButton, InlineAlert } from '@react-spectrum/s2'
 
 type Point = [number, number]
 
@@ -57,32 +58,28 @@ export const EnterPoints = ({
   }
 
   return (
-    <>
-      <div id="point-input-grid">
-        {pointsState.map((point, rowIndex) => (
-          <div id="point-input-row" key={rowIndex}>
-            <PointInput
-              value={point[0]}
-              onChange={newValue => handleEdit(rowIndex, 0, newValue)}
-            />
-            <PointInput
-              value={point[1]}
-              onChange={newValue => handleEdit(rowIndex, 1, newValue)}
-            />
-            <button onClick={() => handleRemoveRow(rowIndex)}>✕</button>
-          </div>
-        ))}
-        <button onClick={handleAddPoint}>Add new point</button>
-        {error && <p className="error">{error}</p>}
-      </div>
-    </>
+    <div className="flex flex-col gap-2">
+      {pointsState.map((point, rowIndex) => (
+        <div key={rowIndex} className="flex gap-2 items-center">
+          <NumberField
+            aria-label={`Point ${rowIndex + 1} x`}
+            value={Number.isNaN(point[0]) ? undefined : point[0]}
+            onChange={(v: number) => handleEdit(rowIndex, 0, v)}
+          />
+          <NumberField
+            aria-label={`Point ${rowIndex + 1} y`}
+            value={Number.isNaN(point[1]) ? undefined : point[1]}
+            onChange={(v: number) => handleEdit(rowIndex, 1, v)}
+          />
+          <ActionButton onPress={() => handleRemoveRow(rowIndex)} aria-label="Remove row">
+            ✕
+          </ActionButton>
+        </div>
+      ))}
+      <Button onPress={handleAddPoint}>Add new point</Button>
+      {error && (
+        <InlineAlert variant="negative">{error}</InlineAlert>
+      )}
+    </div>
   )
-}
-
-const PointInput = ({ value, onChange }: { value: number; onChange: (v: number) => void }) => {
-  const inputValue = Number.isNaN(value) ? '' : value
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    onChange(e.target.valueAsNumber)
-
-  return <input type="number" value={inputValue} onChange={handleChange} />
 }
