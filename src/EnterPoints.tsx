@@ -22,7 +22,7 @@ function validatePoints(points: Point[]): {
     );
 
     if (!isUnique) {
-      error = `Error: You have duplicate values for x=${point[0]}`;
+      error = `Duplicate x-value: ${point[0]}. Each x must be unique.`;
     }
 
     if (hasValues && isUnique) {
@@ -74,28 +74,38 @@ export const EnterPoints = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      {pointsState.map((point, rowIndex) => (
-        <div key={rowIndex} className="flex gap-2 items-center">
-          <NumberField
-            aria-label={`Point ${rowIndex + 1} x`}
-            value={Number.isNaN(point[0]) ? undefined : point[0]}
-            onChange={(v: number) => handleEdit(rowIndex, 0, v)}
-          />
-          <NumberField
-            aria-label={`Point ${rowIndex + 1} y`}
-            value={Number.isNaN(point[1]) ? undefined : point[1]}
-            onChange={(v: number) => handleEdit(rowIndex, 1, v)}
-          />
-          <ActionButton
-            onPress={() => handleRemoveRow(rowIndex)}
-            aria-label="Remove row"
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        {pointsState.map((point, rowIndex) => (
+          <div
+            key={rowIndex}
+            className="flex flex-wrap gap-2 sm:gap-3 items-center rounded-md border border-gray-200 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-800/60 p-3"
           >
-            ✕
-          </ActionButton>
-        </div>
-      ))}
-      <Button onPress={handleAddPoint}>Add new point</Button>
+            <div className="flex gap-2 items-center flex-1 min-w-0">
+              <span className="text-gray-500 dark:text-gray-400 text-sm shrink-0 w-6">
+                {rowIndex + 1}.
+              </span>
+              <NumberField
+                aria-label={`Point ${rowIndex + 1} x`}
+                value={Number.isNaN(point[0]) ? undefined : point[0]}
+                onChange={(v: number) => handleEdit(rowIndex, 0, v)}
+              />
+              <NumberField
+                aria-label={`Point ${rowIndex + 1} y`}
+                value={Number.isNaN(point[1]) ? undefined : point[1]}
+                onChange={(v: number) => handleEdit(rowIndex, 1, v)}
+              />
+            </div>
+            <ActionButton
+              onPress={() => handleRemoveRow(rowIndex)}
+              aria-label="Remove this point"
+            >
+              ✕
+            </ActionButton>
+          </div>
+        ))}
+      </div>
+      <Button onPress={handleAddPoint}>Add a point</Button>
       {error && <InlineAlert variant="negative">{error}</InlineAlert>}
     </div>
   );

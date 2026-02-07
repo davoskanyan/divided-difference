@@ -193,28 +193,50 @@ export const DividedDifference = ({
     [pol]
   );
 
-  if (!pol || !beautified) return null;
+  if (!pol || !beautified) {
+    return (
+      <p className="text-gray-500 dark:text-gray-400 text-sm">
+        Enter at least two points to see the divided difference table and
+        interpolation polynomial.
+      </p>
+    );
+  }
 
   return (
     <Fragment key={JSON.stringify(grid)}>
-      <h3 className="text-lg font-medium">Divided Difference</h3>
-      <div className="flex gap-5">
-        {grid.map((layer, i) => (
-          <div key={i}>
-            {layer.map((cell, j) => (
-              <div key={j} className="min-h-10">
-                <DividedDifferenceCell cell={cell} />
+      <div className="space-y-4">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          Divided difference table
+        </h3>
+        <div className="overflow-x-auto -mx-1">
+          <div className="flex gap-4 min-w-min py-1">
+            {grid.map((layer, i) => (
+              <div key={i} className="flex flex-col gap-1">
+                {layer.map((cell, j) => (
+                  <div
+                    key={j}
+                    className="min-h-[2.25rem] flex items-center text-gray-900 dark:text-gray-100"
+                  >
+                    <DividedDifferenceCell cell={cell} />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ))}
+        </div>
       </div>
-      <h3 className="text-lg font-medium">Interpolation Polynomial</h3>
-      <p className="text-base">
-        <MathJax>
-          \(f(x) = {pol.toTex()} = {beautified.toTex()} \)
-        </MathJax>
-      </p>
+      <div className="pt-6 border-t border-gray-200 dark:border-zinc-700 mt-6">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3">
+          Interpolation polynomial
+        </h3>
+        <div className="rounded-md bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 p-4 overflow-x-auto">
+          <p className="text-base sm:text-lg text-gray-900 dark:text-gray-100 [&_.MathJax]:overflow-x-auto">
+            <MathJax>
+              \(f(x) = {pol.toTex()} = {beautified.toTex()} \)
+            </MathJax>
+          </p>
+        </div>
+      </div>
     </Fragment>
   );
 };
